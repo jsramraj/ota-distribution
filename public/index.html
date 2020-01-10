@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <script src="js/jquery-3.4.1.min.js"></script>
+    </head>
+  <body>
+    <form ref='uploadForm' 
+      id='uploadForm' 
+      action='upload' 
+      method='post' 
+      encType="multipart/form-data">
+        <input type="file" name="sampleFile" />
+        <input type='submit' value='Upload!' />
+    </form>     
+  </body>
+  <script>
+    $("#uploadForm").submit(function (e) {
+        console.log('uploaded successfully');
+        // e.preventDefault();
+    });
+    </script>
+</html>

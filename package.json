@@ -1,0 +1,30 @@
+{
+  "name": "ota-upload",
+  "version": "1.0.0",
+  "description": "Create downloadable link for iOS applications",
+  "main": "app.js",
+  "dependencies": {
+    "async": "^3.1.0",
+    "body-parser": "^1.19.0",
+    "decompress-zip": "^0.2.2",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "glob": "^7.1.6",
+    "gulp": "^4.0.2",
+    "mkdirp": "^0.5.1",
+    "path": "^0.12.7",
+    "rimraf": "^3.0.0",
+    "simple-plist": "^1.1.0",
+    "temporary": "^1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "1.19.4"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon -L --exec npm start",
+    "test": "mocha --reporter spec"
+  },
+  "author": "Ramaraj Thangapandi",
+  "license": "ISC"
+}
