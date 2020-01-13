@@ -40,7 +40,7 @@
 
 <body>
     <div class="mui-container container">
-        <a href="../../security/server.crt" class="button">Install Certificate</a>
+        <a href="../../security/uiCA.crt" class="button">Install Certificate</a>
         <div class="inline">
             <img class="icon center"
                 src="https://cdn.jim-nielsen.com/ios/1024/enlight-videoleap-video-editor-2019-12-23.png"

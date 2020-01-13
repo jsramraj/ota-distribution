@@ -107,3 +107,16 @@ const server = https.createServer(httpsOptions, app).listen(PORT, () => {
         }
     });
 });
+
+
+
+app.listen(8082, () => {
+    console.log(`listening on port ${8082}`)
+    mkdirp.sync(path.join(__dirname, '..', 'public/uploads'), (err) => {
+        if (err) {
+            console.log('Error creating directory', err);
+        } else {
+            console.log('Successfully created uploads directory');
+        }
+    });
+});
