@@ -40,13 +40,14 @@
 
 <body>
     <div class="mui-container container">
+        <a href="../../security/server.crt" class="button">Install Certificate</a>
         <div class="inline">
             <img class="icon center"
                 src="https://cdn.jim-nielsen.com/ios/1024/enlight-videoleap-video-editor-2019-12-23.png"
                 alt="Mountain" />
             <div class="mui--text-headline app_title">APP_NAME</div>
             <div class="mui--text-subhead app_title">BUNDLE_VERSION</div>
-            <button class="mui-btn mui-btn--primary">Install</button>
+            <a href="itms-services://?action=download-manifest&url=PLIST_URL">Install</a>
             <img class="qr center" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BUILD_URL" />
         </div>
     </div>

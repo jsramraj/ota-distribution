@@ -1,5 +1,6 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
+const https = require('https')
 
 const bodyParser = require('body-parser');
 var ipaParser = require('./ipa-parser');
@@ -50,7 +51,7 @@ app.post("/upload", function (req, res) {
                 if (metadata) {
                     fs.readFile('templates/app.plist.template', 'utf-8', (err, data) => {
                         // console.log(data);
-                        data = data.replace('IPA_URL', serverURL + '/' + filePath);
+                        data = data.replace('IPA_URL', serverURL + '/' + filePath.replace('public/', ''));
                         data = data.replace('BUNDLE_IDENTIFIER', metadata.metadata.CFBundleIdentifier);
                         data = data.replace('BUNDLE_VERSION', metadata.metadata.CFBundleShortVersionString);
                         data = data.replace('TITLE_STRING', metadata.metadata.CFBundleName);
@@ -61,7 +62,8 @@ app.post("/upload", function (req, res) {
                             fs.readFile('templates/build.html.template', 'utf-8', (err, data) => {
                                 data = data.replace('APP_NAME', metadata.metadata.CFBundleName);
                                 data = data.replace('BUNDLE_VERSION', metadata.metadata.CFBundleShortVersionString);
-                                data = data.replace('BUILD_URL', serverURL + '/public/build.html');
+                                data = data.replace('BUILD_URL', serverURL + '/' + folder.replace('public/', ''));
+                                data = data.replace('PLIST_URL', serverURL + '/' + folder.replace('public/', '') + '/app.plist');
                                 fs.writeFile(folder + '/index.html', data, 'utf-8', (err) => {
                                     if (err) {
                                         console.log(err);
@@ -86,10 +88,16 @@ app.post("/upload", function (req, res) {
     });
 });
 
-const IP = "10.40.20.32"
+const IP = "rthanga1-in-la1.local"
 const PORT = 8081;
-var serverURL = 'http://' + IP + ':' + PORT;
-app.listen(PORT, () => {
+var serverURL = 'https://' + IP + ':' + PORT;
+
+const httpsOptions = {
+    key: fs.readFileSync('security/server.key'),
+    cert: fs.readFileSync('public/security/server.crt')
+}
+
+const server = https.createServer(httpsOptions, app).listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
     mkdirp.sync(path.join(__dirname, '..', 'public/uploads'), (err) => {
         if (err) {

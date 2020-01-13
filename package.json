@@ -11,6 +11,7 @@
     "express-fileupload": "^1.1.6",
     "glob": "^7.1.6",
     "gulp": "^4.0.2",
+    "https": "^1.0.0",
     "mkdirp": "^0.5.1",
     "path": "^0.12.7",
     "rimraf": "^3.0.0",
