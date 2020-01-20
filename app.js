@@ -4,7 +4,7 @@ const https = require('https')
 
 const bodyParser = require('body-parser');
 var ipaParser = require('./ipa-parser');
-// var ipaParser = require('ipa-metadata');
+const ipaParser2 = require('app-info-parser/src/ipa')
 
 const mkdirp = require('mkdirp');
 const path = require('path');
@@ -43,26 +43,27 @@ app.post("/upload", function (req, res) {
             return res.status(500).send(err.message);
         }
 
-        ipaParser(filePath, function (err, metadata) {
+        const parser = new ipaParser2(filePath)
+        parser.parse().then(result => {
             if (err) {
                 console.log('error parsing ', + err);
             } else {
                 console.log('parsing successful');
-                if (metadata) {
-                    fs.readFile('templates/app.plist.template', 'utf-8', (err, data) => {
+                if (result) {
+                    fs.readFile('templates/app.plist', 'utf-8', (err, data) => {
                         // console.log(data);
                         data = data.replace('IPA_URL', serverURL + '/' + filePath.replace('public/', ''));
-                        data = data.replace('BUNDLE_IDENTIFIER', metadata.metadata.CFBundleIdentifier);
-                        data = data.replace('BUNDLE_VERSION', metadata.metadata.CFBundleShortVersionString);
-                        data = data.replace('TITLE_STRING', metadata.metadata.CFBundleName);
+                        data = data.replace('BUNDLE_IDENTIFIER', result.CFBundleIdentifier);
+                        data = data.replace('BUNDLE_VERSION', result.CFBundleShortVersionString);
+                        data = data.replace('TITLE_STRING', result.CFBundleName);
                         fs.writeFile(folder + '/app.plist', data, 'utf-8', (err) => {
                             if (err) {
                                 console.log(err);
                             }
-                            fs.readFile('templates/build.html.template', 'utf-8', (err, data) => {
-                                data = data.replace('APP_NAME', metadata.metadata.CFBundleName);
-                                data = data.replace('BUNDLE_VERSION', metadata.metadata.CFBundleShortVersionString);
-                                data = data.replace('BUILD_URL', serverURLHttps + '/' + folder.replace('public/', ''));
+                            fs.readFile('templates/build.html', 'utf-8', (err, data) => {
+                                data = data.replace('APP_NAME', result.CFBundleName);
+                                data = data.replace('BUNDLE_VERSION', result.CFBundleShortVersionString);
+                                data = data.replace('BUILD_URL', serverURL + '/' + folder.replace('public/', ''));
                                 data = data.replace('PLIST_URL', serverURLHttps + '/' + folder.replace('public/', '') + '/app.plist');
                                 fs.writeFile(folder + '/index.html', data, 'utf-8', (err) => {
                                     if (err) {
@@ -71,9 +72,22 @@ app.post("/upload", function (req, res) {
                                 });
                             });
                         });
+
+                        var base64Data = result.icon.replace(/^data:image\/png;base64,/, "");
+                        fs.writeFile(folder + "/app-icon.png", base64Data, 'base64', function (err) {
+                            console.log(err);
+                        });
                     });
                 }
             }
+
+        }).catch(err => {
+            console.log('err ----> ', err)
+        })
+
+
+        ipaParser(filePath, function (err, metadata) {
+
         });
 
 
@@ -86,7 +100,7 @@ app.post("/upload", function (req, res) {
     });
 });
 
-const IP = "localhost"
+const IP = "HRISHIK-IN-DA01"
 const PORTHttps = 8081;
 const PORT = 8082;
 var serverURL = 'http://' + IP + ':' + PORT;

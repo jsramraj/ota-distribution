@@ -1,0 +1,93 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- load MUI -->
+  <link href="//cdn.muicss.com/mui-0.10.0/css/mui.min.css" rel="stylesheet" type="text/css" />
+  <script src="//cdn.muicss.com/mui-0.10.0/js/mui.min.js"></script>
+
+  <style>
+    .item1 {
+      grid-row: 1 / span 2;
+    }
+
+    body {
+      text-align: center;
+    }
+
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .app-icon {
+      border-radius: 20px;
+    }
+
+    a:link,
+    a:visited {
+      background-color: #3A95FE;
+      color: white;
+      padding: 5px 25px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      border-radius: 20px;
+    }
+
+    a:hover,
+    a:active {
+      background-color: #3A95FE;
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- example content -->
+  <div class="mui-container">
+    <button class="mui-btn mui-btn--accent" onclick="location.href='../../security/uiCA.crt'">Install
+      Certificate</button>
+
+    <div class="mui-panel">
+
+      <table class="mui-table">
+        <tbody>
+          <tr>
+            <td rowspan="4" width="150px"><img class="app-icon" src="app-icon.png" alt="Mountain" width="100%" /></td>
+            <td>
+              <div class="mui--text-headline app_title">APP_NAME</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="mui--text-subhead app_title">BUNDLE_VERSION</div</td> </tr> <tr>
+            </td>
+          </tr>
+          <tr>
+            <td><a href="itms-services://?action=download-manifest&url=PLIST_URL">Install</a>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <br>
+      <div class="mui--text-body1">Scan the following QR code to open this page in your phone</div>
+      <div class="mui--text-body1">Then tap on the QR code to begin installation</div>
+      <br>
+
+      <div>
+        <img class="qr-center" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BUILD_URL" />
+      </div>
+    </div>
+
+
+  </div>
+  </div>
+</body>
+
+</html>
