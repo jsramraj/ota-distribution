@@ -2,7 +2,7 @@
 
 <head>
     <link href="//cdn.muicss.com/mui-0.10.0/css/mui.min.css" rel="stylesheet" type="text/css" />
-    <link href="upload-success.css" rel="stylesheet" type="text/css" />
+    <!-- <link href="upload-success.css" rel="stylesheet" type="text/css" /> -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"
         type="text/css" />
 
@@ -11,7 +11,168 @@
             font-size: 100px;
             color: green;
         }
+
+        /*--thank you pop starts here--*/
+        .thank-you-pop {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .thank-you-pop img {
+            width: 76px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            margin-bottom: 25px;
+        }
+
+        .thank-you-pop h1 {
+            font-size: 42px;
+            margin-bottom: 25px;
+            color: #5C5C5C;
+        }
+
+        .thank-you-pop p {
+            font-size: 20px;
+            margin-bottom: 27px;
+            color: #5C5C5C;
+        }
+
+        .thank-you-pop h3.cupon-pop {
+            font-size: 25px;
+            margin-bottom: 40px;
+            color: #222;
+            display: inline-block;
+            text-align: center;
+            padding: 10px 20px;
+            border: 2px dashed #222;
+            clear: both;
+            font-weight: normal;
+        }
+
+        .thank-you-pop h3.cupon-pop span {
+            color: #03A9F4;
+        }
+
+        .thank-you-pop a {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 9px 20px;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 14px;
+            background-color: #8BC34A;
+            border-radius: 17px;
+        }
+
+        .thank-you-pop a i {
+            margin-right: 5px;
+            color: #fff;
+        }
+
+        #ignismyModal .modal-header {
+            border: 0px;
+        }
+
+
+        .copy {
+            flex-grow: 1;
+            border-right: 2px solid;
+            padding-right: 10px;
+        }
+
+        .copy-button {
+            margin-left: -10px;
+            height: 41px;
+            width: 80px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        .copy-button:hover {
+            background-color: #45a049;
+        }
+
+        .copy-button:focus {
+            outline: 0;
+        }
+
+        .copy-text {
+            width: 300px;
+            height: 40px;
+            padding-right: 10px;
+
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 140px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -75px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
+
+    <script>
+        function copyURL() {
+            var copyText = document.getElementById("myInput");
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+
+            /* Alert the copied text */
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copied: " + copyText.value;
+        }
+
+        function outFunc() {
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+    </script>
 </head>
 
 <body>
@@ -20,7 +181,17 @@
             <i class="fa fa-check-circle tick"></i>
             <h1>Thank You!</h1>
             <p>Upload successful</p>
-            <h3 class="cupon-pop">Build URL: <span><a href="BUILD_URL"> BUILD_URL</a></span></h3>
+            <div class="copy">
+                <h4>Copy this private URL to share</h4>
+                <input id="myInput" class="copy-text" type="text" value="BUILD_URL">
+
+                <div class="tooltip">
+                    <button class="copy-button" onclick="copyURL()" onmouseout="outFunc()">
+                        <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                        Copy
+                    </button>
+                </div>
+            </div>
 
         </div>
     </div>

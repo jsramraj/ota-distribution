@@ -26,7 +26,7 @@ app.post("/upload", function (req, res) {
     }
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    let sampleFile = req.files.sampleFile;
+    let sampleFile = req.files.file;
 
     // Use the mv() method to place the file somewhere on your server
     var folder = path.join('public/uploads/') + Date.now();
@@ -40,7 +40,7 @@ app.post("/upload", function (req, res) {
     sampleFile.mv(filePath, function (err) {
         if (err) {
             console.log(err);
-            return res.status(500).send(err);
+            return res.status(500).send(err.message);
         }
 
         ipaParser(filePath, function (err, metadata) {
@@ -62,15 +62,14 @@ app.post("/upload", function (req, res) {
                             fs.readFile('templates/build.html.template', 'utf-8', (err, data) => {
                                 data = data.replace('APP_NAME', metadata.metadata.CFBundleName);
                                 data = data.replace('BUNDLE_VERSION', metadata.metadata.CFBundleShortVersionString);
-                                data = data.replace('BUILD_URL', serverURL + '/' + folder.replace('public/', ''));
-                                data = data.replace('PLIST_URL', serverURL + '/' + folder.replace('public/', '') + '/app.plist');
+                                data = data.replace('BUILD_URL', serverURLHttps + '/' + folder.replace('public/', ''));
+                                data = data.replace('PLIST_URL', serverURLHttps + '/' + folder.replace('public/', '') + '/app.plist');
                                 fs.writeFile(folder + '/index.html', data, 'utf-8', (err) => {
                                     if (err) {
                                         console.log(err);
                                     }
                                 });
                             });
-                            console.log(data);
                         });
                     });
                 }
@@ -82,23 +81,24 @@ app.post("/upload", function (req, res) {
         fs.readFile('public/ui/upload-success.html', 'utf-8', (err, data) => {
             data = data.replace('BUILD_URL', serverURL + '/' + folder.replace('public/', ''));
             data = data.replace('BUILD_URL', serverURL + '/' + folder.replace('public/', ''));
-            console.log(data);
             res.send(data.toString());
         });
     });
 });
 
-const IP = "rthanga1-in-la1.local"
-const PORT = 8081;
-var serverURL = 'https://' + IP + ':' + PORT;
+const IP = "localhost"
+const PORTHttps = 8081;
+const PORT = 8082;
+var serverURL = 'http://' + IP + ':' + PORT;
+var serverURLHttps = 'https://' + IP + ':' + PORTHttps;
 
 const httpsOptions = {
     key: fs.readFileSync('security/server.key'),
     cert: fs.readFileSync('public/security/server.crt')
 }
 
-const server = https.createServer(httpsOptions, app).listen(PORT, () => {
-    console.log(`listening on port ${PORT}`)
+const server = https.createServer(httpsOptions, app).listen(PORTHttps, () => {
+    console.log(`listening on port ${PORTHttps}`)
     mkdirp.sync(path.join(__dirname, '..', 'public/uploads'), (err) => {
         if (err) {
             console.log('Error creating directory', err);
@@ -110,9 +110,9 @@ const server = https.createServer(httpsOptions, app).listen(PORT, () => {
 
 
 
-app.listen(8082, () => {
-    console.log(`listening on port ${8082}`)
-    mkdirp.sync(path.join(__dirname, '..', 'public/uploads'), (err) => {
+app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`)
+    mkdirp.sync(path.join(__dirname, 'public/uploads'), (err) => {
         if (err) {
             console.log('Error creating directory', err);
         } else {
