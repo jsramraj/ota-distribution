@@ -27,8 +27,8 @@
       border-radius: 20px;
     }
 
-    a:link,
-    a:visited {
+    a.install-button:link,
+    a.install-button:visited {
       background-color: #3A95FE;
       color: white;
       padding: 5px 25px;
@@ -38,24 +38,24 @@
       border-radius: 20px;
     }
 
-    a:hover,
-    a:active {
+    a.install-button:hover,
+    a.install-button:active {
       background-color: #3A95FE;
     }
-
+    
     .app-info-table {
       margin-bottom: 20px;
     }
 
     .app-title {
-      font-size:5vw;
-    }
-    .app-version {
-      font-size:3vw;   
-      margin-top: 10px;     
-      margin-bottom: 10px;        
+      font-size: 5vw;
     }
 
+    .app-version {
+      font-size: 3vw;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
   </style>
 
 </head>
@@ -75,7 +75,8 @@
               <td>
                 <div class="app_title">APP_NAME</div>
                 <div class="app-version">BUNDLE_VERSION</div>
-                <div><a href="itms-services://?action=download-manifest&url=PLIST_URL">Install</a></div>
+                <div><a class="install-button"
+                    href="itms-services://?action=download-manifest&url=PLIST_URL">Install</a></div>
               </td>
             </tr>
           </tbody>
@@ -92,9 +93,15 @@
       </div>
     </div>
 
+    <br>
+  </div>
+  </div>
+  <footer>
+    <p>Visit the <a target="_blank"
+        href="https://docs.google.com/document/d/e/2PACX-1vSiYHmtwoZrjRRjPgXTe8g4OTIz230JZ9fTUJxHy9zkcJbn_x49O04_RAVYsBWIoUKDaZY7sjqIWMgY/pub">Troubleshooting</a>
+      page if you need help installing this build</p>
+  </footer>
 
-  </div>
-  </div>
 </body>
 
 </html>
