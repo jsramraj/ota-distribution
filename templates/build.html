@@ -42,39 +42,46 @@
     a:active {
       background-color: #3A95FE;
     }
+
+    .app-info-table {
+      margin-bottom: 20px;
+    }
+
+    .app-title {
+      font-size:5vw;
+    }
+    .app-version {
+      font-size:3vw;   
+      margin-top: 10px;     
+      margin-bottom: 10px;        
+    }
+
   </style>
 
 </head>
 
 <body>
-  <!-- example content -->
   <div class="mui-container">
     <button class="mui-btn mui-btn--accent" onclick="location.href='../../security/uiCA.crt'">Install
       Certificate</button>
 
     <div class="mui-panel">
 
-      <table class="mui-table">
-        <tbody>
-          <tr>
-            <td rowspan="4" width="150px"><img class="app-icon" src="app-icon.png" alt="Mountain" width="100%" /></td>
-            <td>
-              <div class="mui--text-headline app_title">APP_NAME</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="mui--text-subhead app_title">BUNDLE_VERSION</div</td> </tr> <tr>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="itms-services://?action=download-manifest&url=PLIST_URL">Install</a>
-            </td>
-          </tr>
-
-        </tbody>
-      </table>
-
+      <div>
+        <table class="app-info-table" align="center" cellspacing="20">
+          <tbody>
+            <tr>
+              <td rowspan="4" width="150px"><img class="app-icon" src="app-icon.png" alt="Mountain" width="100%" /></td>
+              <td>
+                <div class="app_title">APP_NAME</div>
+                <div class="app-version">BUNDLE_VERSION</div>
+                <div><a href="itms-services://?action=download-manifest&url=PLIST_URL">Install</a></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hr align="center" width="90%">
       <br>
       <div class="mui--text-body1">Scan the following QR code to open this page in your phone</div>
       <div class="mui--text-body1">Then tap on the QR code to begin installation</div>
