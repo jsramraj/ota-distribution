@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "app-info-parser": "^0.3.8",
+    "applesign": "^3.4.3",
     "async": "^3.1.0",
     "body-parser": "^1.19.0",
     "decompress-zip": "^0.2.2",
