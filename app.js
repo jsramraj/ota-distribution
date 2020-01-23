@@ -44,31 +44,38 @@ app.post("/upload", function (req, res) {
                 return res.status(500).send(err.message);
             }
 
-            const as = new Applesign({
-                identity: '2A27FB7A96138C76DA5AC137F485136272C29D23',
-                mobileprovision: 'code-sign/c39148d5-1c6e-46d0-b66f-2d1c8e6a841d.mobileprovision',
-            });
-            as.events
-                .on('warning', (msg) => {
-                    console.log('WARNING', msg);
-                })
-                .on('message', (msg) => {
-                    console.log('msg', msg);
+            console.log('codesign ' + req.body.codesign);
+            if (req.body.codesign == 'true') {
+                console.log('let\' sign the code');
+                const as = new Applesign({
+                    identity: '2A27FB7A96138C76DA5AC137F485136272C29D23',
+                    mobileprovision: 'code-sign/c39148d5-1c6e-46d0-b66f-2d1c8e6a841d.mobileprovision',
                 });
-
-            as.signIPA(filePath)
-                .then(_ => {
-                    console.log('ios-deploy -b', as.config.outfile);
-                    console.log('replacing the source ipa file...');
-                    fs.rename(folder + '/' + as.config.outfile, filePath, function (err) {
-                        if (err)
-                            console.log('moving failed ' + err);
+                as.events
+                    .on('warning', (msg) => {
+                        console.log('WARNING', msg);
+                    })
+                    .on('message', (msg) => {
+                        console.log('msg', msg);
                     });
-                })
-                .catch(e => {
-                    console.error(e);
-                    process.exitCode = 1;
-                });
+
+                as.signIPA(filePath)
+                    .then(_ => {
+                        console.log('ios-deploy -b', as.config.outfile);
+                        console.log('replacing the source ipa file...');
+                        fs.rename(folder + '/' + as.config.outfile, filePath, function (err) {
+                            if (err)
+                                console.log('moving failed ' + err);
+                            else
+                                console.log('replaced');
+                                process.exitCode = 0;
+                        });
+                    })
+                    .catch(e => {
+                        console.error(e);
+                        process.exitCode = 1;
+                    });
+            }
 
             const parser = new ipaParser(filePath)
             parser.parse().then(result => {
