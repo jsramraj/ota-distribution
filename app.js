@@ -68,7 +68,7 @@ app.post("/upload", function (req, res) {
                                 console.log('moving failed ' + err);
                             else
                                 console.log('replaced');
-                                process.exitCode = 0;
+                            process.exitCode = 0;
                         });
                     })
                     .catch(e => {
@@ -110,13 +110,22 @@ app.post("/upload", function (req, res) {
                                 });
                             });
 
-                            var base64Data = result.icon.replace(/^data:image\/png;base64,/, "");
-                            fs.writeFile(folder + "/app-icon.png", base64Data, 'base64', function (err) {
-                                if (err) {
-                                    console.log(err);
-                                    return res.status(500).send(err.message);
-                                }
-                            });
+                            if (result.icon) {
+                                var base64Data = result.icon.replace(/^data:image\/png;base64,/, "");
+                                fs.writeFile(folder + "/app-icon.png", base64Data, 'base64', function (err) {
+                                    if (err) {
+                                        console.log(err);
+                                        return res.status(500).send(err.message);
+                                    }
+                                });
+                            } else {
+                                console.log('iPA don\'t have any icons, using blank icon...');
+                                fs.copyFile('templates/app-icon.png', folder + "/app-icon.png", function (err) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                });
+                            }
                         });
                     }
                 }
