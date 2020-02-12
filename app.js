@@ -48,6 +48,7 @@ app.post("/upload", function (req, res) {
             if (req.body.codesign == 'true') {
                 console.log('let\' sign the code');
                 const as = new Applesign({
+                    withGetTaskAllow: false,
                     identity: '2A27FB7A96138C76DA5AC137F485136272C29D23',
                     mobileprovision: 'code-sign/c39148d5-1c6e-46d0-b66f-2d1c8e6a841d.mobileprovision',
                 });
@@ -87,7 +88,7 @@ app.post("/upload", function (req, res) {
                     if (result) {
                         fs.readFile('templates/app.plist', 'utf-8', (err, data) => {
                             // console.log(data);
-                            data = data.replace('IPA_URL', serverURL + '/' + filePath.replace('public/', ''));
+                            data = data.replace('IPA_URL', serverURL + '/' + encodeURI(filePath.replace('public/', '')));
                             data = data.replace('BUNDLE_IDENTIFIER', result.CFBundleIdentifier);
                             data = data.replace('BUNDLE_VERSION', result.CFBundleShortVersionString);
                             data = data.replace('TITLE_STRING', result.CFBundleName);
