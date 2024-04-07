@@ -10,6 +10,7 @@ import {
   createPlistFile,
   SaveAppInfo,
   getAllApps,
+  deleteAppById,
 } from "../controllers/app-controller.js";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
@@ -59,6 +60,7 @@ appsRoute.post("/upload", upload.single("file"), (req, res) => {
     });
 });
 
-appsRoute.get("/102", (req, res) => {
-  res.send("app 102");
+appsRoute.delete("/:id", async (req, res) => {
+  var deleted = await deleteAppById(req.params.id);
+  res.send(deleted);
 });

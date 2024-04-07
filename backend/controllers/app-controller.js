@@ -103,3 +103,17 @@ export async function getAllApps() {
 
   return apps;
 }
+
+export async function deleteAppById(id) {
+  var appInfo = await AppSchema.findByIdAndDelete(id);
+  if (appInfo) {
+    //Delete the folder
+    var folderPath = path.join(__dirname, "../uploads", appInfo.folderName);
+    try {
+      fs.rmdirSync(folderPath, { recursive: true });
+    } catch (err) {
+      console.log("Error deleting folder " + err);
+    }
+  }
+  return appInfo;
+}
