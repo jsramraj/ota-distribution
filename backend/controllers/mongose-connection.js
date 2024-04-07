@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
-const mongoAtlasUri = `mongodb://localhost:27017/ota_dist`;
+const mongoAtlasUri = process.env.MONGO_URL;
 
 export function mongooseConnection() {
   try {

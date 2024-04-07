@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import AppInfoParser from "app-info-parser";
 import AppSchema from "../models/appModel.js";
 import path from "path";
@@ -87,4 +88,18 @@ export function createPlistFile(filePath, metaData) {
       resolve(metaData);
     });
   });
+}
+
+export async function getAllApps() {
+  var cursor = AppSchema.find().cursor();
+  var apps = [];
+  for (
+    let appInfo = await cursor.next();
+    appInfo != null;
+    appInfo = await cursor.next()
+  ) {
+    apps.push(appInfo);
+  }
+
+  return apps;
 }

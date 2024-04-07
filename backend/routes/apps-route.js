@@ -9,6 +9,7 @@ import {
   saveAppIcon,
   createPlistFile,
   SaveAppInfo,
+  getAllApps,
 } from "../controllers/app-controller.js";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
@@ -31,8 +32,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Define a route
-appsRoute.get("/", (req, res) => {
-  res.send("all apps");
+appsRoute.get("/", async (req, res) => {
+  res.send(await getAllApps());
 });
 
 appsRoute.post("/upload", upload.single("file"), (req, res) => {
