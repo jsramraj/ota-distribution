@@ -1,4 +1,5 @@
 import AppInfoParser from "app-info-parser";
+import AppSchema from "../models/appModel.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
@@ -35,6 +36,25 @@ export async function saveAppIcon(metaData, folderPath) {
         resolve(metaData);
       }
     });
+  });
+}
+
+export function SaveAppInfo(metaData, filePath) {
+  return new Promise(async (resolve, reject) => {
+    var folderName = path.basename(path.dirname(filePath));
+
+    console.log("Saving app info to the database...");
+    const app = new AppSchema({
+      name: metaData.CFBundleName,
+      bundleId: metaData.CFBundleIdentifier,
+      version: metaData.CFBundleShortVersionString,
+      build: metaData.CFBundleVersion,
+      icon: "appIcon.png",
+      fileName: path.basename(filePath),
+      folderName: folderName,
+    });
+    await app.save();
+    resolve(app);
   });
 }
 

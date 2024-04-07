@@ -1,9 +1,14 @@
 import express from "express";
 import dotenv from "dotenv";
 import { appsRoute } from "./routes/apps-route.js";
+import { mongooseConnection } from "./controllers/mongose-connection.js";
 
 dotenv.config();
 
+// Connect to the database
+mongooseConnection();
+
+// Initialize the app
 const app = express();
 
 app.get("/", (req, res) => {

@@ -8,6 +8,7 @@ import {
   parseIpa,
   saveAppIcon,
   createPlistFile,
+  SaveAppInfo,
 } from "../controllers/app-controller.js";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
@@ -46,7 +47,11 @@ appsRoute.post("/upload", upload.single("file"), (req, res) => {
       return createPlistFile(req.file.path, data);
     })
     .then((data) => {
-      res.json(data.CFBundleIdentifier);
+      return SaveAppInfo(data, req.file.path);
+    })
+    .then((data) => {
+      //   res.json("File uploaded successfully!");
+      res.json(data);
     })
     .catch((error) => {
       return res.status(500).json({ message: error.message });
