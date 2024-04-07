@@ -4,7 +4,11 @@ import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-import { parseIpa } from "../controllers/app-controller.js";
+import {
+  parseIpa,
+  saveAppIcon,
+  createPlistFile,
+} from "../controllers/app-controller.js";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -33,9 +37,16 @@ appsRoute.get("/", (req, res) => {
 appsRoute.post("/upload", upload.single("file"), (req, res) => {
   // Handle the uploaded file
   console.log("File uploaded successfully!");
+
   parseIpa(req.file.path)
     .then((data) => {
-      res.json({ message: data });
+      return saveAppIcon(data, path.dirname(req.file.path));
+    })
+    .then((data) => {
+      return createPlistFile(req.file.path, data);
+    })
+    .then((data) => {
+      res.json(data.CFBundleIdentifier);
     })
     .catch((error) => {
       return res.status(500).json({ message: error.message });
