@@ -98,6 +98,7 @@ export async function getAllApps() {
     appInfo != null;
     appInfo = await cursor.next()
   ) {
+    appInfo.icon = path.join(appInfo.folderName, "appIcon.png");
     apps.push(appInfo);
   }
 

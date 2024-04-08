@@ -10,6 +10,7 @@ mongooseConnection();
 
 // Initialize the app
 const app = express();
+app.use(express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("hello world");
