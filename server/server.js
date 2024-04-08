@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-app.use("/apps", appsRoute);
+app.use("/api/apps", appsRoute);
 
 const port = process.env.PORT || 3000;
 

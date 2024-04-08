@@ -108,5 +108,5 @@ dist
 
 
 public/uploads/*
-backend/uploads
+server/uploads
 old/public/uploads

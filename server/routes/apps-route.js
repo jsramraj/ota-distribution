@@ -62,5 +62,9 @@ appsRoute.post("/upload", upload.single("file"), (req, res) => {
 
 appsRoute.delete("/:id", async (req, res) => {
   var deleted = await deleteAppById(req.params.id);
-  res.send(deleted);
+  if (deleted) {
+    res.status(200).send("Deleted successfully");
+  } else {
+    res.status(404).send("App not found");
+  }
 });

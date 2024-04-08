@@ -107,6 +107,7 @@ export async function getAllApps() {
 export async function deleteAppById(id) {
   var appInfo = await AppSchema.findByIdAndDelete(id);
   if (appInfo) {
+    console.log("App deleted successfully!");
     //Delete the folder
     var folderPath = path.join(__dirname, "../uploads", appInfo.folderName);
     try {
@@ -114,6 +115,8 @@ export async function deleteAppById(id) {
     } catch (err) {
       console.log("Error deleting folder " + err);
     }
+  } else {
+    console.log("App not found!");
   }
   return appInfo;
 }
