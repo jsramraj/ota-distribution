@@ -105,6 +105,20 @@ export async function getAllApps() {
   return apps;
 }
 
+export async function getAppById(id) {
+  return new Promise(async (resolve, reject) => {
+    AppSchema.findById(id)
+      .then((app) => {
+        app.icon = path.join(app.folderName, "appIcon.png");
+        resolve(app);
+      })
+      .catch((err) => {
+        console.log("App not found!");
+        reject("App not found!");
+      });
+  });
+}
+
 export async function deleteAppById(id) {
   var appInfo = await AppSchema.findByIdAndDelete(id);
   if (appInfo) {

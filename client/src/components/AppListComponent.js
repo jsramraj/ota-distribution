@@ -1,4 +1,4 @@
-import { React } from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import OpenInNewOffIcon from "@mui/icons-material/OpenInNewOff";
 import IconButton from "@mui/material/IconButton";
+import { Link } from "react-router-dom";
 
 const HeaderTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -22,10 +23,33 @@ const HeaderTableCell = styled(TableCell)(({ theme }) => ({
 
 const openAppInNewTab = (app) => {
   console.log(app);
+  window.open(`/apps/${app._id}`, "_blank");
 };
 
-export default function AppList({ apps }) {
-  return (
+export default function AppList({}) {
+  const [loading, setLoading] = React.useState(true);
+  const [appData, setAppData] = React.useState([]);
+
+  React.useEffect(() => {
+    setLoading(true);
+    fetch("/api/apps")
+      .then((res) => res.json())
+      .then((data) => {
+        setAppData(data);
+        console.log(appData);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        console.log(loading);
+        setLoading(false);
+      });
+  }, []);
+
+  return loading ? (
+    <b>Loading...</b>
+  ) : (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer component={Paper}>
         <Table stickyHeader sx={{ minWidth: 300 }} aria-label="simple table">
@@ -40,7 +64,7 @@ export default function AppList({ apps }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {apps.map((app) => (
+            {appData?.map((app) => (
               <TableRow hover key={app.name} sx={{ "td, th": { border: 0 } }}>
                 <TableCell align="center">
                   <img
@@ -64,7 +88,7 @@ export default function AppList({ apps }) {
                 <TableCell align="left">{app.createdAt}</TableCell>
                 <TableCell align="center">
                   <IconButton onClick={(event) => openAppInNewTab(app)}>
-                    <OpenInNewOffIcon />
+                    <OpenInNewOffIcon></OpenInNewOffIcon>
                   </IconButton>
                 </TableCell>
               </TableRow>

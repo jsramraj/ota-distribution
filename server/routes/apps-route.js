@@ -10,6 +10,7 @@ import {
   createPlistFile,
   SaveAppInfo,
   getAllApps,
+  getAppById,
   deleteAppById,
 } from "../controllers/app-controller.js";
 
@@ -35,6 +36,16 @@ const upload = multer({ storage: storage });
 // Define a route
 appsRoute.get("/", async (req, res) => {
   res.send(await getAllApps());
+});
+
+appsRoute.get("/:id", async (req, res) => {
+  getAppById(req.params.id)
+    .then((app) => {
+      res.json(app);
+    })
+    .catch((error) => {
+      res.status(404).send(error);
+    });
 });
 
 appsRoute.post("/upload", upload.single("file"), (req, res) => {

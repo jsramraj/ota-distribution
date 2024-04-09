@@ -2,31 +2,24 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import AppList from "./components/AppListComponent";
+import AppDetailComponent from "./components/AppDetailComponent";
+import {
+  BrowserRouter,
+  Routes,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 
 function App() {
-  const [loading, setLoading] = React.useState(true);
-  const [appData, setAppData] = React.useState([]);
-
-  React.useEffect(() => {
-    setLoading(true);
-    fetch("/api/apps")
-      .then((res) => res.json())
-      .then((data) => {
-        setAppData(data);
-        console.log(appData);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log(loading);
-        setLoading(false);
-      });
-  }, []);
-
   return (
     <div className="App">
-      <AppList apps={appData} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/apps" element={<AppList />}></Route>
+          <Route path="/apps/:id" element={<AppDetailComponent />}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
