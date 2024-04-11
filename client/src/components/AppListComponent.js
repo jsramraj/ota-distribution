@@ -8,11 +8,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import OpenInNewOffIcon from "@mui/icons-material/OpenInNewOff";
+import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import AddButton from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import "./AppListComponent.css";
 import { Button } from "@mui/material";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
+import Snackbar from "@mui/material/Snackbar";
 
 const HeaderTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,6 +40,37 @@ const onUploadButtonClicked = () => {
 export default function AppList({}) {
   const [loading, setLoading] = React.useState(true);
   const [appData, setAppData] = React.useState([]);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState("");
+
+  const deleteApp = (app) => {
+    console.log("Deleting app: ", app._id);
+    fetch(`/api/apps/${app._id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        console.log(response);
+        window.location.reload();
+        showSnackbar("App deleted successfully!");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        showSnackbar("Failed to delete app!");
+      })
+      .finally(() => {});
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
+  };
 
   React.useEffect(() => {
     setLoading(true);
@@ -54,10 +89,14 @@ export default function AppList({}) {
       });
   }, []);
 
-  return loading ? (
-    <b>Loading...</b>
-  ) : (
-    <Paper class="paper">
+  return (
+    <Paper className="paper" style={{ maxWidth: 750, margin: "0 auto" }}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        message={snackbarMessage}
+      />
       <Button
         variant="contained"
         startIcon={<AddButton />}
@@ -66,6 +105,15 @@ export default function AppList({}) {
       >
         Upload
       </Button>
+
+      <div style={{ clear: "both" }}></div>
+      {loading ? (
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      ) : null}
+
+      <br />
       <TableContainer component={Paper}>
         <Table stickyHeader sx={{ minWidth: 300 }} aria-label="simple table">
           <TableHead>
@@ -103,7 +151,19 @@ export default function AppList({}) {
                 <TableCell align="left">{app.createdAt}</TableCell>
                 <TableCell align="center">
                   <IconButton onClick={(event) => openAppInNewTab(app)}>
-                    <OpenInNewOffIcon></OpenInNewOffIcon>
+                    <OpenInNewOffIcon />
+                  </IconButton>
+                  <IconButton
+                    onClick={(event) => {
+                      if (
+                        window.confirm(
+                          "Are you sure you wish to delete this app?"
+                        )
+                      )
+                        deleteApp(app);
+                    }}
+                  >
+                    <DeleteIcon color="error" />
                   </IconButton>
                 </TableCell>
               </TableRow>

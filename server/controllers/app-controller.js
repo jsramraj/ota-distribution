@@ -126,6 +126,7 @@ export async function deleteAppById(id) {
     //Delete the folder
     var folderPath = path.join(__dirname, "../uploads", appInfo.folderName);
     try {
+      console.log("Deleting folder: " + folderPath);
       fs.rmdirSync(folderPath, { recursive: true });
     } catch (err) {
       console.log("Error deleting folder " + err);
