@@ -9,7 +9,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import OpenInNewOffIcon from "@mui/icons-material/OpenInNewOff";
 import IconButton from "@mui/material/IconButton";
+import AddButton from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import "./AppListComponent.css";
+import { Button } from "@mui/material";
 
 const HeaderTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -24,6 +27,10 @@ const HeaderTableCell = styled(TableCell)(({ theme }) => ({
 const openAppInNewTab = (app) => {
   console.log(app);
   window.open(`/apps/${app._id}`, "_blank");
+};
+
+const onUploadButtonClicked = () => {
+  window.location.href = "apps/upload";
 };
 
 export default function AppList({}) {
@@ -50,7 +57,15 @@ export default function AppList({}) {
   return loading ? (
     <b>Loading...</b>
   ) : (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <Paper class="paper">
+      <Button
+        variant="contained"
+        startIcon={<AddButton />}
+        style={{ float: "right", margin: 10 }}
+        onClick={() => onUploadButtonClicked()}
+      >
+        Upload
+      </Button>
       <TableContainer component={Paper}>
         <Table stickyHeader sx={{ minWidth: 300 }} aria-label="simple table">
           <TableHead>
